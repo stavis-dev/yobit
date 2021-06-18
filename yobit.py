@@ -8,10 +8,10 @@ import hashlib
 import json
 try:
     from urllib import urlencode
-    from urlparse import urljoin
+    # from urlparse import urljoin
 except ImportError:
     from urllib.parse import urlencode
-    from urllib.parse import urljoin
+    # from urllib.parse import urljoin
 import requests
 
 BASE_PUBLIC = 'https://yobit.net/api/3/'
@@ -19,7 +19,8 @@ BASE_TRADE = 'https://yobit.net/tapi'
 
 
 def refactor_result(json_ob):
-    return json.dumps(json_ob, sort_keys=True, indent=4, separators=(',', ': '))
+    return json.dumps(json_ob, sort_keys=True,
+                      indent=4, separators=(',', ': '))
 
 
 class YoBit(object):
@@ -59,6 +60,7 @@ class YoBit(object):
 
         request_url = BASE_PUBLIC + method
         if pair != '':
+            # this is where the urljoin module should be
             request_url += '/' + pair.lower()
         if options != {}:
             request_url += '?'
@@ -88,7 +90,9 @@ class YoBit(object):
 
         body = urlencode(options)
 
-        signature = hmac.new(self.api_secret.encode(), body.encode(), hashlib.sha512).hexdigest()
+        signature = hmac.new(self.api_secret.encode(),
+                             body.encode(), hashlib.sha512
+                             ).hexdigest()
         headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Key': self.api_key,
@@ -100,7 +104,8 @@ class YoBit(object):
     def info(self):
         """
         Used to get about server time and coin pares of the YoBit market.
-        Response contains min_price, max_price, min_amount, and fee for each pair.
+        Response contains min_price,
+        max_price, min_amount, and fee for each pair.
 
         :return: JSON of pairs with info
         :rtype : dict
@@ -110,7 +115,8 @@ class YoBit(object):
     def ticker(self, pair):
         """
         Used to get statistic data for the last 24 hours for selected pair.
-        Response contains hight, low, avg, vol, vol_cur, last, buy, sell fields for the pair.
+        Response contains hight, low, avg, vol, vol_cur, last, buy,
+        sell fields for the pair.
 
         :param pair: Pair of currencies, example 'ltc_btc'
         :type pair: str
@@ -139,7 +145,8 @@ class YoBit(object):
     def trades(self, pair, limit=150):
         """
         Used to get information about the last transactions of selected pair.
-        Response contains type, price, amount, tid, timestamp for each transaction.
+        Response contains type, price, amount, tid,
+        timestamp for each transaction.
 
         :param pair: Pair of currencies, example 'ltc_btc'
         :type pair: str
@@ -154,8 +161,10 @@ class YoBit(object):
 
     def get_info(self):
         """
-        Used to get information about user's balances and priviledges of API-key
-        as well as server time. Response contains funds, fund_incl_orders, rights,
+        Used to get information about user's
+        balances and priviledges of API-key
+        as well as server time. Response contains funds,
+        fund_incl_orders, rights,
         transaction_count, open_orders, server time.
 
         :return: JSON with info
@@ -182,7 +191,10 @@ class YoBit(object):
         :return: Success, info about the order, order_id.
         :rtype : dict
         """
-        return self.__api_query_trade('Trade', {'pair': pair, 'type': trade_type, 'rate': rate, 'amount': amount})
+        return self.__api_query_trade(
+            'Trade',
+            {'pair': pair, 'type': trade_type, 'rate': rate, 'amount': amount}
+            )
 
     def active_orders(self, pair):
         """
@@ -222,17 +234,20 @@ class YoBit(object):
         """
         return self.__api_query_trade('CancelOrder', {'order_id': order_id})
 
-    def trade_history(self, pair, from_start=0, count=1000, from_id=0, end_id=100000000000,
+    def trade_history(self, pair,
+                      from_start=0, count=1000, from_id=0, end_id=100000000000,
                       order='DESC', since=0, end=time.time() + 1000):
         """
         Used to retrieve transaction history.
         Response contains list of transactions with pair, type,
-        amount, rate, order_id, is_your_order and timestamp for each transaction.
+        amount, rate, order_id,
+        is_your_order and timestamp for each transaction.
 
         :param pair: Pair of currencies, example 'ltc_btc'
         :type pair: str
 
-        :param from_start: Number of transaction from which response starts (default 0)
+        :param from_start:
+            Number of transaction from which response starts (default 0)
         :type from_start: int
 
         :param count: Quantity of transactions in response (default 1000)
@@ -241,10 +256,12 @@ class YoBit(object):
         :param from_id: ID of transaction from which response start (default 0)
         :type from_id: int
 
-        :param end_id: ID of trnsaction at which response finishes (default inf)
+        :param end_id:
+            ID of trnsaction at which response finishes (default inf)
         :type end_id: int
 
-        :param order: Sorting order, 'ASC' for ascending and 'DESC' for descending
+        :param order:
+            Sorting order, 'ASC' for ascending and 'DESC' for descending
         :type order: str
 
         :param since: The time to start the display (unix time, default 0)
