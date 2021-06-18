@@ -8,10 +8,10 @@ import hashlib
 import json
 try:
     from urllib import urlencode
-    from urlparse import urljoin
+    # from urlparse import urljoin
 except ImportError:
     from urllib.parse import urlencode
-    from urllib.parse import urljoin
+    # from urllib.parse import urljoin
 import requests
 
 BASE_PUBLIC = 'https://yobit.net/api/3/'
@@ -60,6 +60,7 @@ class YoBit(object):
 
         request_url = BASE_PUBLIC + method
         if pair != '':
+            # this is where the urljoin module should be
             request_url += '/' + pair.lower()
         if options != {}:
             request_url += '?'
