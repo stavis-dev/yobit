@@ -30,6 +30,7 @@ setup(
     packages=find_packages(exclude=('tests')),
     entry_points={'console_scripts': ['yobit=YoBit:main']},
     install_requires=['requests'],
+    setup_requires=['wheel'],
     classifiers=["Programming Language :: Python",
                  "Programming Language :: Python :: 3",
                  ]

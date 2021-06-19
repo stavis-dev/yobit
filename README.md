@@ -10,7 +10,10 @@
 
 ## Installing / Установка
 
-Наверное надо замутить установщик.
+```bash
+# from pip
+pip install git+https://github.com/stavis-dev/yobit
+```
 
 ## Usage / Использование
 
