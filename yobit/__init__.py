@@ -28,13 +28,15 @@ class YoBit(object):
         API key and API secret are used for Trade API
     """
 
-    def __init__(self, api_key='', api_secret=''):
+    def __init__(self, api_key: str = '', api_secret: str = '',
+                 verbose: bool = False):
         self.api_key = str(api_key) if api_key is not None else ''
         self.api_secret = str(api_secret) if api_secret is not None else ''
-        if api_key == '' or api_secret == '':
-            print('mode: PublicAPI')
-        else:
-            print('mode: PublicAPI & TradeAPI')
+        if verbose:
+            if api_key == '' or api_secret == '':
+                print('mode: PublicAPI')
+            else:
+                print('mode: PublicAPI & TradeAPI')
 
     @staticmethod
     def __api_query_public(method, pair=None, options=None):
